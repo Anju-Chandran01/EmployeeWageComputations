@@ -11,14 +11,9 @@ maxWorkingDays=20;
 totalSalary=0;
 maxWorkingHrs=100;
 
-#TO CALCULATE TOTAL WORKING HOUR OF THE EMPLOYEE
-while [[ $totalWorkingHrs -lt $maxWorkingHrs && $totalWorkingDays -le $maxWorkingDays ]]
-do
-
-	#TO CHECK EMPLOYEE IS PART OR NOT
-	((totalWorkingDays++))
-   empCheck=$((RANDOM%3))
-   case $empCheck in
+# FUNCTION TO RETURN WORKING HOURS OF EMPLOYEE
+function getWorkingHrs(){
+   case $1 in
       $isFullTime) empHrs=8
                   ;;
       $isPartTime) empHrs=4
@@ -26,10 +21,15 @@ do
                *) empHrs=0
                   ;;
    esac
-   totalWorkingHrs=$(($totalWorkingHrs+$empHrs));
-done
-echo "Total working hours of the employee is" $totalWorkingHrs;
+   echo $empHrs; #RETURN
+}
 
-#CALCULATE TOTAL SALARY WITH TOTAL WORKING HOUR
-totalSalary=$(($totalWorkingHrs*$empRatePerHr));
-echo "Total salary of the employee is" $totalSalary;
+#CALCULATION OF TOTAL WORKING HOURS THROUGH FUNCTION CALL
+while [[ $totalWorkingHrs -lt $maxWorkingHrs && $totalWorkingDays -le $maxWorkingDays ]]
+do
+	((totalWorkingDays++))
+	empCheck=$((RANDOM%3))
+	empHrs=$(getWorkingHrs $empCheck) #FUNCTION CALL
+	totalWorkingHrs=$(($totalWorkingHrs+$empHrs))
+done
+echo "Total Working Hours of the employee is" $totalWorkingHrs;
