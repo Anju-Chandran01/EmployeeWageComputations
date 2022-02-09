@@ -3,14 +3,20 @@
 empRatePerHr=20;
 isFullTime=1;
 isPartTime=2;
+
+totalWorkingDays=0;
+totalWorkingHrs=0;
+
 maxWorkingDays=20;
 totalSalary=0;
+maxWorkingHrs=100;
 
-# for loop for 20 days salary calculation
-for (( days=1; days<=$maxWorkingDays; days++))
+#TO CALCULATE TOTAL WORKING HOUR OF THE EMPLOYEE
+while [[ $totalWorkingHrs -lt $maxWorkingHrs && $totalWorkingDays -le $maxWorkingDays ]]
 do
 
-	#check fulltime or part time
+	#TO CHECK EMPLOYEE IS PART OR NOT
+	((totalWorkingDays++))
    empCheck=$((RANDOM%3))
    case $empCheck in
       $isFullTime) empHrs=8
@@ -20,9 +26,10 @@ do
                *) empHrs=0
                   ;;
    esac
-
-   salary=$(($empRatePerHr*$empHrs))
-   totalSalary=$(($totalSalary+$salary))
+   totalWorkingHrs=$(($totalWorkingHrs+$empHrs));
 done
+echo "Total working hours of the employee is" $totalWorkingHrs;
 
-echo $totalSalary;
+#CALCULATE TOTAL SALARY WITH TOTAL WORKING HOUR
+totalSalary=$(($totalWorkingHrs*$empRatePerHr));
+echo "Total salary of the employee is" $totalSalary;
